@@ -7,11 +7,19 @@ full of ideas, and the worst economy in living memory. Pick an invention to
 dedicate your life to, then steer it through ten brutal years of dust, bank runs,
 rivals, and the occasional flicker of hope.
 
-## Play it online
+## Play it online (GitHub Pages)
 
-This repo deploys itself to **GitHub Pages**. Once Pages is enabled
-(Settings → Pages → Source: **GitHub Actions**), every push publishes the
-live site, and the URL appears in the Actions run summary — typically:
+This repo can deploy itself to **GitHub Pages** via the included workflow.
+GitHub requires Pages to be switched on once by a repo admin (the deploy
+token can't enable it automatically) — a 10-second, one-time step:
+
+1. Go to **Settings → Pages**.
+2. Under **Build and deployment → Source**, choose **GitHub Actions**.
+3. Re-run the "Deploy game to GitHub Pages" workflow (Actions tab → latest
+   run → **Re-run all jobs**), or just push any commit.
+
+After that, every push publishes the live site automatically. The URL
+appears in the Actions run summary — typically:
 
 ```
 https://<your-username>.github.io/Great-Depression/
