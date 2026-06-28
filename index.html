@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Inventor's Gamble — A Great Depression Story</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="vignette"></div>
+  <div id="grain"></div>
+
+  <main id="app">
+    <!-- TITLE SCREEN -->
+    <section id="title-screen" class="screen active">
+      <div class="title-card">
+        <p class="eyebrow">1929 &mdash; 1939</p>
+        <h1>THE INVENTOR'S<br/>GAMBLE</h1>
+        <p class="tagline">You have a workbench, a head full of ideas, and the worst economy in living memory. Build something the world can't afford to ignore.</p>
+        <div class="title-actions">
+          <button class="btn btn-primary" id="start-btn">Begin in October 1929</button>
+          <button class="btn btn-ghost" id="how-btn">How to Play</button>
+        </div>
+        <p class="footnote">A historical strategy game. Every year brings a real event from the Great Depression.</p>
+      </div>
+    </section>
+
+    <!-- HOW TO PLAY -->
+    <section id="how-screen" class="screen">
+      <div class="panel narrow">
+        <h2>How to Play</h2>
+        <ul class="how-list">
+          <li><b>You are an inventor</b> in 1929, the month the market crashed. Survive the decade and leave a legacy.</li>
+          <li><b>Each turn is a season.</b> You take <b>one action</b> per season: research, build a prototype, sell, take odd jobs, or rest.</li>
+          <li><b>Watch four meters:</b> <span class="chip cash">Cash</span> keeps you alive, <span class="chip morale">Morale</span> keeps you going, <span class="chip rep">Reputation</span> opens doors, and <span class="chip prog">Progress</span> finishes your invention.</li>
+          <li><b>Events strike</b> &mdash; dust storms, bank runs, a rival, a hungry neighbor. Your choices shape your story.</li>
+          <li>If <span class="chip cash">Cash</span> or <span class="chip morale">Morale</span> hits zero, your dream ends. Finish your invention to win.</li>
+        </ul>
+        <button class="btn btn-primary" id="how-back">Back</button>
+      </div>
+    </section>
+
+    <!-- SETUP: choose invention -->
+    <section id="setup-screen" class="screen">
+      <div class="panel">
+        <h2>What are you trying to build?</h2>
+        <p class="muted">Your life's work. Choose the gamble that fits you.</p>
+        <div id="invention-grid" class="invention-grid"></div>
+      </div>
+    </section>
+
+    <!-- MAIN GAME -->
+    <section id="game-screen" class="screen">
+      <header id="hud">
+        <div class="hud-date">
+          <span id="season-label">Autumn</span>
+          <span id="year-label">1929</span>
+        </div>
+        <div class="meters">
+          <div class="meter" title="Cash. Hit zero and you're out on the street.">
+            <span class="meter-icon">💵</span>
+            <div class="bar"><div class="fill cash" id="cash-fill"></div></div>
+            <span class="meter-val" id="cash-val">$200</span>
+          </div>
+          <div class="meter" title="Morale. Your spirit and health. Don't let it break.">
+            <span class="meter-icon">❤️</span>
+            <div class="bar"><div class="fill morale" id="morale-fill"></div></div>
+            <span class="meter-val" id="morale-val">70</span>
+          </div>
+          <div class="meter" title="Reputation. Who trusts and knows you.">
+            <span class="meter-icon">🤝</span>
+            <div class="bar"><div class="fill rep" id="rep-fill"></div></div>
+            <span class="meter-val" id="rep-val">10</span>
+          </div>
+          <div class="meter" title="Progress on your invention. Reach 100 to finish it.">
+            <span class="meter-icon">⚙️</span>
+            <div class="bar"><div class="fill prog" id="prog-fill"></div></div>
+            <span class="meter-val" id="prog-val">0%</span>
+          </div>
+        </div>
+        <div class="hud-invention">
+          <span class="muted">Building:</span> <b id="invention-name">—</b>
+        </div>
+      </header>
+
+      <div id="stage">
+        <!-- Narrative / event area -->
+        <div id="narrative" class="card">
+          <div id="narrative-icon" class="big-icon">📰</div>
+          <p id="narrative-title" class="narrative-title">Black Thursday</p>
+          <p id="narrative-body" class="narrative-body"></p>
+        </div>
+
+        <!-- Choices (events) -->
+        <div id="choices" class="choices hidden"></div>
+
+        <!-- Standard season actions -->
+        <div id="actions" class="actions">
+          <button class="action" data-action="research">
+            <span class="action-icon">🔬</span>
+            <span class="action-name">Research</span>
+            <span class="action-desc">Push your design forward. +Progress, −Morale.</span>
+          </button>
+          <button class="action" data-action="prototype">
+            <span class="action-icon">🔨</span>
+            <span class="action-name">Build Prototype</span>
+            <span class="action-desc">Spend cash for a big leap in progress.</span>
+          </button>
+          <button class="action" data-action="sell">
+            <span class="action-icon">📈</span>
+            <span class="action-name">Hustle &amp; Sell</span>
+            <span class="action-desc">Turn progress &amp; reputation into cash.</span>
+          </button>
+          <button class="action" data-action="oddjob">
+            <span class="action-icon">🪚</span>
+            <span class="action-name">Odd Jobs</span>
+            <span class="action-desc">Reliable cash, but no progress.</span>
+          </button>
+          <button class="action" data-action="rest">
+            <span class="action-icon">☕</span>
+            <span class="action-name">Rest &amp; Recover</span>
+            <span class="action-desc">Restore morale. The world waits.</span>
+          </button>
+        </div>
+      </div>
+
+      <footer id="log-wrap">
+        <p class="log-title">Diary</p>
+        <ul id="log"></ul>
+      </footer>
+    </section>
+
+    <!-- GAME OVER / WIN -->
+    <section id="end-screen" class="screen">
+      <div class="panel narrow end-panel">
+        <div id="end-icon" class="big-icon">🏆</div>
+        <h2 id="end-title">Your Story</h2>
+        <p id="end-body" class="end-body"></p>
+        <div id="end-stats" class="end-stats"></div>
+        <p id="end-rank" class="end-rank"></p>
+        <button class="btn btn-primary" id="restart-btn">Play Again</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
