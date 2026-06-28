@@ -7,7 +7,17 @@ full of ideas, and the worst economy in living memory. Pick an invention to
 dedicate your life to, then steer it through ten brutal years of dust, bank runs,
 rivals, and the occasional flicker of hope.
 
-## Play it
+## Play it online
+
+This repo deploys itself to **GitHub Pages**. Once Pages is enabled
+(Settings → Pages → Source: **GitHub Actions**), every push publishes the
+live site, and the URL appears in the Actions run summary — typically:
+
+```
+https://<your-username>.github.io/Great-Depression/
+```
+
+## Play it locally
 
 No build step, no dependencies. Just open the game in a browser:
 
