@@ -4,15 +4,18 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>The Inventor's Gamble — A Great Depression Story</title>
-<meta name="description" content="Survive the Great Depression as a struggling inventor. A free browser game: build your invention through ten years of dust storms, bank runs, and real historical events." />
+<meta name="description" content="Live the story of a struggling inventor in the Great Depression. A different story every time — dust storms, bank runs, a rival, the people you love, and the one invention that might change everything." />
 <meta name="theme-color" content="#9c4a2a" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9B%A0%EF%B8%8F%3C/text%3E%3C/svg%3E" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="The Inventor's Gamble" />
-<meta property="og:description" content="Survive the Great Depression as a struggling inventor. Build something the world can't afford to ignore." />
+<meta property="og:description" content="Live the story of a struggling inventor in the Great Depression. A different story every time." />
 <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="season-autumn">
+  <!-- Living background -->
+  <div id="sky"></div>
+  <div id="dust" aria-hidden="true"></div>
   <div id="vignette"></div>
   <div id="grain"></div>
 
@@ -20,27 +23,27 @@
     <!-- TITLE SCREEN -->
     <section id="title-screen" class="screen active">
       <div class="title-card">
-        <p class="eyebrow">1929 &mdash; 1939</p>
+        <p class="eyebrow">A Story of the Great Depression &middot; 1929&ndash;1939</p>
         <h1>THE INVENTOR'S<br/>GAMBLE</h1>
-        <p class="tagline">You have a workbench, a head full of ideas, and the worst economy in living memory. Build something the world can't afford to ignore.</p>
+        <p class="tagline">One workbench. One impossible idea. Ten years that broke a nation. This is your story &mdash; and it's never the same twice.</p>
         <div class="title-actions">
-          <button class="btn btn-primary" id="start-btn">Begin in October 1929</button>
-          <button class="btn btn-ghost" id="how-btn">How to Play</button>
+          <button class="btn btn-primary" id="start-btn">Begin Your Story</button>
+          <button class="btn btn-ghost" id="how-btn">How It Works</button>
         </div>
-        <p class="footnote">A historical strategy game. Every year brings a real event from the Great Depression.</p>
+        <p class="footnote">A different character, a different decade, every single time you play.</p>
       </div>
     </section>
 
     <!-- HOW TO PLAY -->
     <section id="how-screen" class="screen">
       <div class="panel narrow">
-        <h2>How to Play</h2>
+        <h2>How It Works</h2>
         <ul class="how-list">
-          <li><b>You are an inventor</b> in 1929, the month the market crashed. Survive the decade and leave a legacy.</li>
-          <li><b>Each turn is a season.</b> You take <b>one action</b> per season: research, build a prototype, sell, take odd jobs, or rest.</li>
-          <li><b>Watch four meters:</b> <span class="chip cash">Cash</span> keeps you alive, <span class="chip morale">Morale</span> keeps you going, <span class="chip rep">Reputation</span> opens doors, and <span class="chip prog">Progress</span> finishes your invention.</li>
-          <li><b>Events strike</b> &mdash; dust storms, bank runs, a rival, a hungry neighbor. Your choices shape your story.</li>
-          <li>If <span class="chip cash">Cash</span> or <span class="chip morale">Morale</span> hits zero, your dream ends. Finish your invention to win.</li>
+          <li>You are someone the world has forgotten &mdash; with one idea it can't afford to.</li>
+          <li>Each <b>season</b>, you take a single action: chase the work, build, sell, scrape by, or rest.</li>
+          <li>Four things keep your story alive: <span class="chip cash">Money</span>, <span class="chip morale">Heart</span>, <span class="chip rep">Name</span>, and <span class="chip prog">The Work</span>.</li>
+          <li>People drift in and out &mdash; someone you love, someone who wants you to fail. What you choose changes how it ends.</li>
+          <li>Finish the work and you make history. Run out of money or heart, and the story ends another way.</li>
         </ul>
         <button class="btn btn-primary" id="how-back">Back</button>
       </div>
@@ -49,8 +52,8 @@
     <!-- SETUP: choose invention -->
     <section id="setup-screen" class="screen">
       <div class="panel">
-        <h2>What are you trying to build?</h2>
-        <p class="muted">Your life's work. Choose the gamble that fits you.</p>
+        <h2 id="setup-title">What will you give your life to?</h2>
+        <p class="muted" id="setup-sub">Choose the one idea worth all the years to come.</p>
         <div id="invention-grid" class="invention-grid"></div>
       </div>
     </section>
@@ -63,37 +66,39 @@
           <span id="year-label">1929</span>
         </div>
         <div class="meters">
-          <div class="meter" title="Cash. Hit zero and you're out on the street.">
+          <div class="meter" title="Money. Run out and you're on the street.">
             <span class="meter-icon">💵</span>
             <div class="bar"><div class="fill cash" id="cash-fill"></div></div>
             <span class="meter-val" id="cash-val">$200</span>
           </div>
-          <div class="meter" title="Morale. Your spirit and health. Don't let it break.">
+          <div class="meter" title="Heart. Your spirit and health. Don't let it break.">
             <span class="meter-icon">❤️</span>
             <div class="bar"><div class="fill morale" id="morale-fill"></div></div>
             <span class="meter-val" id="morale-val">70</span>
           </div>
-          <div class="meter" title="Reputation. Who trusts and knows you.">
+          <div class="meter" title="Name. How known and trusted you are.">
             <span class="meter-icon">🤝</span>
             <div class="bar"><div class="fill rep" id="rep-fill"></div></div>
             <span class="meter-val" id="rep-val">10</span>
           </div>
-          <div class="meter" title="Progress on your invention. Reach 100 to finish it.">
+          <div class="meter" title="The Work. Reach 100% to finish your invention.">
             <span class="meter-icon">⚙️</span>
             <div class="bar"><div class="fill prog" id="prog-fill"></div></div>
             <span class="meter-val" id="prog-val">0%</span>
           </div>
         </div>
         <div class="hud-invention">
-          <span class="muted">Building:</span> <b id="invention-name">—</b>
+          <span class="muted" id="who-label">—</span> &middot; <span class="muted">building</span> <b id="invention-name">—</b>
         </div>
       </header>
 
       <div id="stage">
+        <!-- Scene illustration -->
+        <div id="scene" class="scene">🌆</div>
+
         <!-- Narrative / event area -->
-        <div id="narrative" class="card">
-          <div id="narrative-icon" class="big-icon">📰</div>
-          <p id="narrative-title" class="narrative-title">Black Thursday</p>
+        <div id="narrative" class="card" title="Click to skip">
+          <p id="narrative-title" class="narrative-title">&nbsp;</p>
           <p id="narrative-body" class="narrative-body"></p>
         </div>
 
@@ -104,34 +109,34 @@
         <div id="actions" class="actions">
           <button class="action" data-action="research">
             <span class="action-icon">🔬</span>
-            <span class="action-name">Research</span>
-            <span class="action-desc">Push your design forward. +Progress, −Morale.</span>
+            <span class="action-name">Chase the Idea</span>
+            <span class="action-desc">Push the work forward. The Work up, Heart down.</span>
           </button>
           <button class="action" data-action="prototype">
             <span class="action-icon">🔨</span>
-            <span class="action-name">Build Prototype</span>
-            <span class="action-desc">Spend cash for a big leap in progress.</span>
+            <span class="action-name">Build It</span>
+            <span class="action-desc">Spend money for a real leap in The Work.</span>
           </button>
           <button class="action" data-action="sell">
             <span class="action-icon">📈</span>
-            <span class="action-name">Hustle &amp; Sell</span>
-            <span class="action-desc">Turn progress &amp; reputation into cash.</span>
+            <span class="action-name">Take It to the Streets</span>
+            <span class="action-desc">Turn your name &amp; work into money.</span>
           </button>
           <button class="action" data-action="oddjob">
             <span class="action-icon">🪚</span>
-            <span class="action-name">Odd Jobs</span>
-            <span class="action-desc">Reliable cash, but no progress.</span>
+            <span class="action-name">Honest Wages</span>
+            <span class="action-desc">Reliable money, but the work waits.</span>
           </button>
           <button class="action" data-action="rest">
             <span class="action-icon">☕</span>
-            <span class="action-name">Rest &amp; Recover</span>
-            <span class="action-desc">Restore morale. The world waits.</span>
+            <span class="action-name">Catch Your Breath</span>
+            <span class="action-desc">Recover your Heart. The world goes on.</span>
           </button>
         </div>
       </div>
 
       <footer id="log-wrap">
-        <p class="log-title">Diary</p>
+        <p class="log-title">Your Diary</p>
         <ul id="log"></ul>
       </footer>
     </section>
@@ -144,7 +149,7 @@
         <p id="end-body" class="end-body"></p>
         <div id="end-stats" class="end-stats"></div>
         <p id="end-rank" class="end-rank"></p>
-        <button class="btn btn-primary" id="restart-btn">Play Again</button>
+        <button class="btn btn-primary" id="restart-btn">Live a New Story</button>
       </div>
     </section>
   </main>
